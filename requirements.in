@@ -1,0 +1,6 @@
+tensorflow==1.15.2
+numpy
+matplotlib
+pandas
+pip-tools
+opencv-python==4.2.0.34

@@ -19,3 +19,6 @@ train_tf.py
 archive/
 requirements.txt
 test_dups.py
+prediction.csv
+prediction.png
+.idea

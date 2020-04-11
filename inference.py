@@ -83,6 +83,8 @@ def predict(path_image, path_metagraph, path_ckpt, path_output_csv=None, path_ou
             raise FailedToWriteResultsError('failed to write CSV file results') from e
 
     logging.info('Prediction: {}'.format(class_names[pred.argmax()]))
+    logging.info('Confidence')
+    logging.info('Normal: {:.3f}, Pneumonia: {:.3f}, COVID-19: {:.3f}'.format(pred[0][0], pred[0][1], pred[0][2]))
     logging.info('**DISCLAIMER**')
     logging.info('Do not use this prediction for self-diagnosis.'
                  ' You should check with your local authorities for the latest advice on seeking medical assistance.')

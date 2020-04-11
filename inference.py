@@ -1,12 +1,14 @@
-import time
-import numpy as np
-import tensorflow as tf
-import os
 import argparse
-import cv2
 import logging
+import os
+import time
+
+import cv2
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import tensorflow as tf
+
 from errors import CouldNotReadImageError, FailedToWriteResultsError
 
 

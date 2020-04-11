@@ -15,9 +15,11 @@ def parse_args():
     parser.add_argument('--weightspath', default='model', type=str, help='Path to output folder')
     parser.add_argument('--metaname', default='model.meta_eval', type=str, help='Name of ckpt meta file')
     parser.add_argument('--ckptname', default='model-2069', type=str, help='Name of model ckpts')
-    parser.add_argument('--imagepath', default='assets/ex-covid.jpeg', type=str, help='Full path to image to be inferenced')
+    parser.add_argument('--imagepath', default='assets/ex-covid.jpeg', type=str,
+                        help='Full path to image to be inferenced')
     parser.add_argument('--output_csvpath', default='prediction.csv', type=str, help='Path to output csv file')
-    parser.add_argument('--output_vispath', default='prediction.png', type=str, help='Path to output visualization file')
+    parser.add_argument('--output_vispath', default='prediction.png', type=str,
+                        help='Path to output visualization file')
     parser.add_argument('--verbose', type=bool, nargs='?', default=False, const=True, help='print verbose output')
 
     args = parser.parse_args()
@@ -46,7 +48,7 @@ def predict(path_image, path_metagraph, path_ckpt, path_output_csv=None, path_ou
 
     t0 = time.time()
     pred = sess.run(pred_tensor, feed_dict={image_tensor: np.expand_dims(x, axis=0)})
-    logging.debug('duration prediction: {:0.3f}s'.format(time.time()-t0))
+    logging.debug('duration prediction: {:0.3f}s'.format(time.time() - t0))
     pred = pred[0, :]
     assert len(pred) == 3, 'NN must have 3 outputs'
 
@@ -58,10 +60,10 @@ def predict(path_image, path_metagraph, path_ckpt, path_output_csv=None, path_ou
         plt.grid(axis='y', alpha=0.1)
         plt.yticks(np.linspace(0, 1, 11))
         for i, v in enumerate(pred):
-            plt.text(i-.20, np.clip(v+0.01, 0, 0.95),
-                      '{:0.2f}'.format(pred[i]),
-                      fontsize=14,
-                      color=(0, 0, 0, 0.75))
+            plt.text(i - .20, np.clip(v + 0.01, 0, 0.95),
+                     '{:0.2f}'.format(pred[i]),
+                     fontsize=14,
+                     color=(0, 0, 0, 0.75))
         try:
             plt.savefig(path_output_plot)
         except Exception as e:
@@ -85,9 +87,23 @@ def predict(path_image, path_metagraph, path_ckpt, path_output_csv=None, path_ou
     logging.info('Prediction: {}'.format(class_names[pred.argmax()]))
     logging.info('Confidence')
     logging.info('Normal: {:.3f}, Pneumonia: {:.3f}, COVID-19: {:.3f}'.format(pred[0][0], pred[0][1], pred[0][2]))
-    logging.info('**DISCLAIMER**')
-    logging.info('Do not use this prediction for self-diagnosis.'
-                 ' You should check with your local authorities for the latest advice on seeking medical assistance.')
+
+    # add a disclaimer
+    disclaimer_header = '**DISCLAIMER**'
+    disclaimer_message = 'Do not use this prediction for self-diagnosis.\n' \
+                         ' You should check with your local authorities for the latest advice on seeking medical' \
+                         ' assistance.\n' \
+                         'COVID-Net was developed by Vision and Image Processing Research Group, University of' \
+                         ' Waterloo and DarwinAI Corp., Canada.' \
+                         'This software is licensed under the GNU Affero General Public License v3.0. The source code' \
+                         ' and changelog is publicly available from https://github.com/kmlvision/COVID-Net.'
+    logging.info(disclaimer_header)
+    logging.info(disclaimer_message)
+
+    if path_output_plot is not None or path_output_csv is not None:
+        with open('disclaimer.txt', 'w') as f:
+            f.write(disclaimer_header + "\n")
+            f.write(disclaimer_message)
 
 
 if __name__ == "__main__":
@@ -98,9 +114,10 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO, format='%(message)s')
         logging.getLogger('tensorflow').setLevel(logging.WARNING)
 
-    predict(args.imagepath,
-            os.path.join(args.weightspath, args.metaname),
-            os.path.join(args.weightspath, args.ckptname),
-            args.output_csvpath,
-            args.output_vispath
-            )
+    predict(
+        args.imagepath,
+        os.path.join(args.weightspath, args.metaname),
+        os.path.join(args.weightspath, args.ckptname),
+        args.output_csvpath,
+        args.output_vispath
+    )

@@ -21,11 +21,8 @@ RUN apt-get update -qq && \
 RUN mkdir -p /usr/src/covid_net/
 WORKDIR /usr/src/covid_net/
 
-# download the COVID-Net Large
-RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1djqWcxzRehtyJV9EQsppj1YdgsP2JRQy' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1djqWcxzRehtyJV9EQsppj1YdgsP2JRQy" -O model.zip && rm -rf /tmp/cookies.txt && \
-    unzip model.zip -d model && \
-    rm -rf model.zip
-
+# get the model
+COPY --from=kmlvision/covid-net:model-sm-v20200329 /usr/src/covid_net/model model
 
 # installation of python requirements
 COPY requirements.txt .
@@ -33,11 +30,11 @@ COPY requirements.txt .
 RUN pip3 install -U pip
 RUN pip3 install -r requirements.txt
 
-
 COPY assets/ assets
-COPY errors.py .
 COPY LICENSE.md .
-COPY inference.py .
+COPY CHANGELOG.md .
 COPY README.md .
 
+COPY errors.py .
+COPY inference.py .
 

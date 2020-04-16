@@ -33,6 +33,8 @@ def predict(path_image, path_metagraph, path_ckpt, path_output_csv=None, path_ou
     x = cv2.imread(path_image)
     if x is None:
         raise CouldNotReadImageError('failed to read input image {}'.format(path_image))
+    h, w, c = x.shape
+    x = x[int(h / 6):, :]
     x = cv2.resize(x, (224, 224))
     x = x.astype('float32') / 255.0
 

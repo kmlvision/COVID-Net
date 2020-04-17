@@ -15,8 +15,8 @@ from errors import CouldNotReadImageError, FailedToWriteResultsError
 def parse_args():
     parser = argparse.ArgumentParser(description='COVID-Net Inference')
     parser.add_argument('--weightspath', default='model', type=str, help='Path to output folder')
-    parser.add_argument('--metaname', default='model.meta_eval', type=str, help='Name of ckpt meta file')
-    parser.add_argument('--ckptname', default='model-2069', type=str, help='Name of model ckpts')
+    parser.add_argument('--metaname', default='model.meta', type=str, help='Name of ckpt meta file')
+    parser.add_argument('--ckptname', default='model-8485', type=str, help='Name of model ckpts')
     parser.add_argument('--imagepath', default='assets/ex-covid.jpeg', type=str,
                         help='Full path to image to be inferred')
     parser.add_argument('--output_csvpath', default='prediction.csv', type=str, help='Path to output csv file')

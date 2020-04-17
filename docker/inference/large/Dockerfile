@@ -22,7 +22,7 @@ RUN mkdir -p /usr/src/covid_net/
 WORKDIR /usr/src/covid_net/
 
 # get the model
-COPY --from=kmlvision/covid-net:model-lg-v20200329 /usr/src/covid_net/model model
+COPY --from=kmlvision/covid-net:model-lg-v20200416 /usr/src/covid_net/model model
 
 # installation of python requirements
 COPY requirements.txt .

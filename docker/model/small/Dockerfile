@@ -9,8 +9,7 @@ RUN mkdir -p /usr/src/covid_net/model
 WORKDIR /usr/src/covid_net/
 
 # download the COVID-Net Small into the "model" directory
-# createdDate: "2020-04-16 14:23:50.887215289 +0200"
-# modifiedDate: "2020-04-16 14:23:50.887215289 +0200"
+# modifiedDate on Google Drive: Apr 14, 2020 by Linda Wang
 
 # download of files checkpoint and model-1697.index
 RUN wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1JKgAQ5tv0lfRytMrohKH8UBOpGJot00z' -O model/checkpoint && \
